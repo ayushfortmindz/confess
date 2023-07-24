@@ -1,7 +1,5 @@
 import 'package:confess/constant/color.dart';
 import 'package:confess/screen/dashboard/dashboard_bloc/dashboard_bloc.dart';
-import 'package:confess/screen/dashboard/widget/atom/btn_filled_atom.dart';
-import 'package:confess/screen/dashboard/widget/molecule/add_confess_dialogbox.dart';
 import 'package:confess/screen/dashboard/widget/molecule/confess_widget.dart';
 import 'package:confess/screen/dashboard/widget/molecule/navbar.dart';
 import 'package:flutter/material.dart';

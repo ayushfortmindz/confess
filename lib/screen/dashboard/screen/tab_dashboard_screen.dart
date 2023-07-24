@@ -1,11 +1,9 @@
 import 'package:confess/constant/color.dart';
 import 'package:confess/screen/dashboard/dashboard_bloc/dashboard_bloc.dart';
-import 'package:confess/screen/dashboard/widget/atom/btn_filled_atom.dart';
-import 'package:confess/screen/dashboard/widget/molecule/add_confess_dialogbox.dart';
 import 'package:confess/screen/dashboard/widget/molecule/confess_widget.dart';
-import 'package:confess/screen/dashboard/widget/molecule/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hoverover/hoverover.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class TabDashboardScreen extends StatefulWidget {
