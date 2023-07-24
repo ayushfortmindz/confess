@@ -1,8 +1,11 @@
 import 'package:confess/constant/color.dart';
+import 'package:confess/screen/dashboard/dashboard_bloc/dashboard_bloc.dart';
 import 'package:confess/screen/dashboard/widget/atom/btn_filled_atom.dart';
 import 'package:confess/screen/dashboard/widget/molecule/add_confess_dialogbox.dart';
 import 'package:confess/screen/dashboard/widget/molecule/confess_widget.dart';
+import 'package:confess/screen/dashboard/widget/molecule/navbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class TabDashboardScreen extends StatefulWidget {
@@ -15,6 +18,13 @@ class TabDashboardScreen extends StatefulWidget {
 }
 
 class _TabDashboardScreenState extends State<TabDashboardScreen> {
+  late DashboardBloc dashboardBloc;
+  @override
+  void initState() {
+    dashboardBloc = context.read<DashboardBloc>();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -33,10 +43,30 @@ class _TabDashboardScreenState extends State<TabDashboardScreen> {
                   ),
                 ),
                 const Spacer(),
-                BtnFilled(
-                  title: 'Add Confession',
-                  onTap: () {
-                    addConfessDialogbox(context);
+                HoverOver(
+                  builder: (isHovered) {
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isHovered ? Colors.white : Kcolor.pink,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(100),
+                        ),
+                        border: Border.all(
+                          color: isHovered ? Kcolor.pink : Colors.white,
+                        ),
+                      ),
+                      child: Text(
+                        'Add Confession',
+                        style: TextStyle(
+                          color: isHovered ? Kcolor.pink : Colors.white,
+                        ),
+                      ),
+                    );
                   },
                 )
               ],
@@ -71,19 +101,63 @@ class _TabDashboardScreenState extends State<TabDashboardScreen> {
           ),
           const SizedBox(height: 20),
           Center(
-            child: ResponsiveGridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 7,
-              gridDelegate: const ResponsiveGridDelegate(
-                maxCrossAxisExtent: 300,
-                mainAxisSpacing: 20,
-                childAspectRatio: 16 / 12,
-                crossAxisSpacing: 20,
-              ),
-              itemBuilder: (context, index) => const ConfessWidget(),
+            child: HoverOver(
+              builder: (isHovered) {
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    color: isHovered ? Colors.white : Kcolor.pink,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(100),
+                    ),
+                    border: Border.all(
+                      color: isHovered ? Kcolor.pink : Colors.white,
+                    ),
+                  ),
+                  child: Text(
+                    'Add Confession',
+                    style: TextStyle(
+                      color: isHovered ? Kcolor.pink : Colors.white,
+                    ),
+                  ),
+                );
+              },
             ),
-          )
+          ),
+          const SizedBox(height: 20),
+          BlocBuilder<DashboardBloc, DashboardState>(
+            bloc: dashboardBloc,
+            builder: (context, state) {
+              return state.maybeWhen(
+                orElse: () => const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
+                loaded: (confessionList) => Center(
+                  child: ResponsiveGridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: confessionList.length,
+                    gridDelegate: const ResponsiveGridDelegate(
+                      maxCrossAxisExtent: 300,
+                      mainAxisSpacing: 20,
+                      childAspectRatio: 16 / 12,
+                      crossAxisSpacing: 20,
+                    ),
+                    itemBuilder: (context, index) =>
+                        ConfessWidget(confession: confessionList[index]),
+                  ),
+                ),
+                error: (message) => Center(
+                  child: Text(message),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 20),
         ],
       ),
     );
